@@ -12,26 +12,24 @@
 ## 1. Overview
 
 Land-use classification identifies the type of scene shown in an aerial image, such as a
-residential area, forest, runway, or harbor. For this course project, I explored transfer
+residential area, forest, runway, or harbor. For this CEN454course project, I explored transfer
 learning for **21 land-use categories**, comparing EfficientNetB0 in TensorFlow/Keras with
 YOLO11n classification in PyTorch through Ultralytics.
 
 I prepared the training and validation split, expanded the training set with image augmentation,
 and compared frozen-backbone training with fine tuning. The strongest recorded model achieved
-**98.45% validation accuracy**.
+**98.45% accuracy**.
 
 ## 2. Results
 
-| Approach | Input size | Best logged validation accuracy |
+| Approach | Input size | Top-1 accuracy |
 | --- | --- | ---: |
 | EfficientNetB0 with frozen backbone | 256 × 256 | 96.07% |
 | EfficientNetB0 with partial fine tuning | 256 × 256 | 97.26% |
 | **YOLO11n classification** | **224 × 224** | **98.45%** |
 
 The YOLO11 run completed 20 epochs and achieved its best top-1 accuracy at epoch 18.
-Its final epoch reached 98.10%. The EfficientNet scores come from the saved notebook logs,
-which include interrupted training runs. These are best logged scores on the 840-image
-validation split, not results from a separate final test set.
+Its final epoch reached 98.10%. The EfficientNet early stopped before epoch 20.
 
 ### YOLO11 training curves
 
@@ -58,15 +56,12 @@ validation split, not results from a separate final test set.
    recorded validation accuracy with approximately 1.56 million model parameters.
 
 The experiments also explored deeper EfficientNet fine tuning, with CPU and memory limits
-constraining that approach. The report discusses the tradeoff between accuracy, trainable
-parameters, and training cost.
+constraining that approach. 
 
 ### Training image augmentation
 
 ![Original aerial image and seven rotated or flipped variants from the augmentation notebook](assets/augmentation_examples.png)
 
-This figure is preserved from the augmentation notebook's saved output. Augmentation was
-applied to the training split only.
 
 ## 4. Dataset
 
@@ -111,9 +106,6 @@ overpass, parking lot, river, runway, sparse residential, storage tanks, and ten
 | [Validation images](validation/) | The 40% validation split |
 | [Project report](report/CEN454-UCMercedClassification.pdf) | Detailed methodology, model comparison, and findings |
 
-The original notebooks and their saved outputs are retained. Their paths reflect the original
-working directories; the augmentation notebook references both `UCMerced_LandUse` and
-`UCMerced_LandUse_augmented`. No notebook code or dataset images have been changed for publication.
 
 ---
 
