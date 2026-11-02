@@ -55,9 +55,17 @@ Its final epoch reached 98.10%. The EfficientNet early stopped before epoch 20.
    for 20 epochs at an image size of 224 and batch size of 16. It delivered the highest
    recorded validation accuracy with approximately 1.56 million model parameters.
 
+The experiments also explored deeper EfficientNet fine tuning, with CPU and memory limits
+constraining that approach. 
+
+### Training image augmentation
+
+![Original aerial image and seven rotated or flipped variants from the augmentation notebook](assets/augmentation_examples.png)
+
+
 ### Model architectures
 
-<details>
+<details open>
 <summary>Approach 1: EfficientNetB0 with a frozen backbone</summary>
 
 The ImageNet-pretrained backbone is frozen. Global average pooling, dropout, and a
@@ -70,7 +78,7 @@ the project adapts the classification head for the 21 land-use classes.
 
 </details>
 
-<details>
+<details open>
 <summary>Approach 2: EfficientNetB0 with partial fine tuning</summary>
 
 Fine tuning begins at `block6d_se_excite`, with earlier layers and batch normalization
@@ -81,7 +89,7 @@ a learning rate of `0.0001`.
 
 </details>
 
-<details>
+<details open>
 <summary>Approach 3: YOLO11n-cls architecture and building blocks</summary>
 
 The classification model is fine-tuned for **21 classes**. The layer summary from the
@@ -110,14 +118,6 @@ YOLO11n-cls summary: 151 layers, 1,558,005 parameters,
 | ![C3k2 and C3k block diagrams from the report](assets/yolo11_c3k2_c3k.png) | ![PSA and C2PSA block diagrams from the report](assets/yolo11_psa_c2psa.png) |
 
 </details>
-
-The experiments also explored deeper EfficientNet fine tuning, with CPU and memory limits
-constraining that approach. 
-
-### Training image augmentation
-
-![Original aerial image and seven rotated or flipped variants from the augmentation notebook](assets/augmentation_examples.png)
-
 
 ## 4. Dataset
 
