@@ -1,0 +1,30 @@
+# Python environments and generated caches
+.venv/
+.venv-*/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.cache
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+
+# New model runs and exports; retain the supplied YOLO checkpoints.
+/runs/
+/models/
+*.pt
+!/yolo11/weights/best.pt
+!/yolo11/weights/last.pt
+*.h5
+*.keras
+*.onnx
+*.engine
+*.log
+
+# Dataset images in train/, train_augmented/, and validation/ are included.
