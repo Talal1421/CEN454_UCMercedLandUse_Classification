@@ -55,6 +55,62 @@ Its final epoch reached 98.10%. The EfficientNet early stopped before epoch 20.
    for 20 epochs at an image size of 224 and batch size of 16. It delivered the highest
    recorded validation accuracy with approximately 1.56 million model parameters.
 
+### Model architectures
+
+<details>
+<summary>Approach 1: EfficientNetB0 with a frozen backbone</summary>
+
+The ImageNet-pretrained backbone is frozen. Global average pooling, dropout, and a
+21-class dense output form the classifier, with **26,901 trainable parameters**.
+
+![EfficientNet backbone illustration from the project report](assets/efficientnet_backbone.png)
+
+The report uses this illustration to show the EfficientNet backbone and its MBConv blocks;
+the project adapts the classification head for the 21 land-use classes.
+
+</details>
+
+<details>
+<summary>Approach 2: EfficientNetB0 with partial fine tuning</summary>
+
+Fine tuning begins at `block6d_se_excite`, with earlier layers and batch normalization
+layers kept frozen. This configuration has **1,369,669 trainable parameters** and uses
+a learning rate of `0.0001`.
+
+![Annotated EfficientNet diagram showing the frozen and fine-tuned sections from the report](assets/efficientnet_partial_finetuning.png)
+
+</details>
+
+<details>
+<summary>Approach 3: YOLO11n-cls architecture and building blocks</summary>
+
+The classification model is fine-tuned for **21 classes**. The layer summary from the
+report is shown below, followed by its C3k2/C3k and PSA/C2PSA block diagrams.
+
+```text
+    from  n   params  module                                  arguments
+ 0    -1  1      464  ultralytics.nn.modules.conv.Conv         [3, 16, 3, 2]
+ 1    -1  1     4672  ultralytics.nn.modules.conv.Conv         [16, 32, 3, 2]
+ 2    -1  1     6640  ultralytics.nn.modules.block.C3k2        [32, 64, 1, False, 0.25]
+ 3    -1  1    36992  ultralytics.nn.modules.conv.Conv         [64, 64, 3, 2]
+ 4    -1  1    26080  ultralytics.nn.modules.block.C3k2        [64, 128, 1, False, 0.25]
+ 5    -1  1   147712  ultralytics.nn.modules.conv.Conv         [128, 128, 3, 2]
+ 6    -1  1    87040  ultralytics.nn.modules.block.C3k2        [128, 128, 1, True]
+ 7    -1  1   295424  ultralytics.nn.modules.conv.Conv         [128, 256, 3, 2]
+ 8    -1  1   346112  ultralytics.nn.modules.block.C3k2        [256, 256, 1, True]
+ 9    -1  1   249728  ultralytics.nn.modules.block.C2PSA       [256, 256, 1]
+10    -1  1   357141  ultralytics.nn.modules.head.Classify     [256, 21]
+
+YOLO11n-cls summary: 151 layers, 1,558,005 parameters,
+                    1,558,005 gradients, 3.3 GFLOPs
+```
+
+| C3k2 and C3k blocks | PSA and C2PSA blocks |
+| :---: | :---: |
+| ![C3k2 and C3k block diagrams from the report](assets/yolo11_c3k2_c3k.png) | ![PSA and C2PSA block diagrams from the report](assets/yolo11_psa_c2psa.png) |
+
+</details>
+
 The experiments also explored deeper EfficientNet fine tuning, with CPU and memory limits
 constraining that approach. 
 
